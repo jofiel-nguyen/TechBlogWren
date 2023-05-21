@@ -15,7 +15,7 @@ let blogPosts = [
       author: 'Jane Smith'
     }
   ];
-  
+  const currentDate = new Date().toISOString().split('T')[0];  
   // Homepage route
   app.get('/', (req, res) => {
     // Render the homepage
@@ -154,7 +154,7 @@ app.post('/dashboard/new', (req, res) => {
     id: blogPosts.length + 1,
     title,
     content,
-    dateCreated: new Date().toISOString(),
+    dateCreated: currentDate,
     author:req.session.user.username,
   };
   blogPosts.push(newPost);
@@ -172,12 +172,12 @@ app.post('/dashboard/delete/:id', (req, res) => {
     res.sendStatus(404); // Send a not found response
   }
 });
-
 // Route for editing a blog post
 app.get('/dashboard/edit/:id', (req, res) => {
   const postId = parseInt(req.params.id);
   const post = blogPosts.find(post => post.id === postId);
   if (post) {
+    const username = req.session.user.username; // Get the username of the currently logged-in user
     // Render the form to edit the blog post
     res.send(`
       <html>
@@ -185,10 +185,41 @@ app.get('/dashboard/edit/:id', (req, res) => {
           <style>
           body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #184d47; /* Neo green background color */
-            color: #e9e9e9; /* Font color opposite to background */
+          }
+          .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+          }
+          h1 {
+            text-align: center;
+          }
+          label {
+            display: block;
+            margin-bottom: 10px;
+          }
+          input[type="text"],
+          input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+          }
+          button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          button:hover {
+            background-color: #45a049;
           }
           .top-bar {
             display: flex;
@@ -204,34 +235,12 @@ app.get('/dashboard/edit/:id', (req, res) => {
             margin-right: 10px;
             background-color: #520000; /* Dark brown red background color */
           }
-          h1 {
-            color: #520000; /* Dark brown red font color */
-            background-color: aquamarine; /* Aquamarine background color */
-           
-          }
-          .blog-post {
-            background-color: aquamarine; /* Aquamarine background color */
-            color: #520000; /* Dark brown red font color */
-            padding: 10px;
-            margin-bottom: 20px;
-          }
-
-          h2, p, span {
-            margin: 0;
-            padding: 0;
-          }
-          h2 {
-            display: inline-block;
-          }
-          h2, p {
-            background-color: aquamarine; /* Aquamarine background color */
-            color: #520000; /* Dark brown red font color */
-          }
           </style>
         </head>
         <body>
           <div class="container">
             <h1>Edit Blog Post</h1>
+            <h2>Author: ${username}</h2> <!-- Display the username -->
             <form action="/dashboard/update/${postId}" method="POST">
               <label for="title">Title:</label>
               <input type="text" id="title" name="title" value="${post.title}" required>
