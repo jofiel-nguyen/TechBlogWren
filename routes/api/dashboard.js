@@ -176,8 +176,9 @@ app.post('/dashboard/delete/:id', (req, res) => {
 app.get('/dashboard/edit/:id', (req, res) => {
   const postId = parseInt(req.params.id);
   const post = blogPosts.find(post => post.id === postId);
+
   if (post) {
-    const username = req.session.user.username; // Get the username of the currently logged-in user
+    const username = req.session.user.username;
     // Render the form to edit the blog post
     res.send(`
       <html>
@@ -233,19 +234,20 @@ app.get('/dashboard/edit/:id', (req, res) => {
             text-decoration: none;
             padding: 10px;
             margin-right: 10px;
-            background-color: #520000; /* Dark brown red background color */
+            background-color: #520000; 
           }
           </style>
         </head>
         <body>
           <div class="container">
             <h1>Edit Blog Post</h1>
-            <h2>Author: ${username}</h2> <!-- Display the username -->
+            <h2>Author: ${username}</h2> 
             <form action="/dashboard/update/${postId}" method="POST">
               <label for="title">Title:</label>
               <input type="text" id="title" name="title" value="${post.title}" required>
               <label for="content">Content:</label>
               <textarea id="content" name="content" required>${post.content}</textarea>
+              <input type="hidden" name="author" value="${username}">
               <button type="submit">Update</button>
             </form>
           </div>
@@ -260,11 +262,12 @@ app.get('/dashboard/edit/:id', (req, res) => {
 // Route for updating a blog post
 app.post('/dashboard/update/:id', (req, res) => {
   const postId = parseInt(req.params.id);
-  const { title, content } = req.body;
+  const { title, content, author } = req.body;
   const postIndex = blogPosts.findIndex(post => post.id === postId);
   if (postIndex !== -1) {
     blogPosts[postIndex].title = title;
     blogPosts[postIndex].content = content;
+    blogPosts[postIndex].author = author;
   }
   res.redirect('/dashboard');
 });
