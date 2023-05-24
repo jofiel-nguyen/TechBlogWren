@@ -60,6 +60,29 @@ app.get('/', (req, res) => {
             margin-right: 10px;
             background-color: #520000; /* Dark brown red background color */
           }
+          .table-style {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          .table-style th, .table-style td {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          .table-style th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+          
+          .table-style tr:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+          
+          .table-style tr:hover {
+            background-color: #e9e9e9;
+          }
+          
           </style>
         </head>
         <body>
@@ -75,7 +98,7 @@ app.get('/', (req, res) => {
             <p>
               MVC is a software architectural pattern commonly used in web development. It divides an application into three interconnected components:
             </p>
-            <table>
+            <table class="table-style">
               <thead>
                 <tr>
                   <th>Component</th>
