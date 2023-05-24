@@ -10,7 +10,7 @@ let blogPosts = [
     {
       id: 2,
       title: 'JavaScript Basics',
-      content: 'a high-level, interpreted programming language primarily used for creating interactive and dynamic web content. It was originally developed by Brendan Eich at Netscape Communications in 1995. JavaScript is widely used on the client-side of web development to add interactivity, validate input, manipulate HTML elements, and perform various actions in response to user interactions.',
+      content: 'JaveScript is a high-level, interpreted programming language primarily used for creating interactive and dynamic web content. It was originally developed by Brendan Eich at Netscape Communications in 1995. JavaScript is widely used on the client-side of web development to add interactivity, validate input, manipulate HTML elements, and perform various actions in response to user interactions.',
       dateCreated: '2023-05-19',
       author: 'Jane Smith'
     }
