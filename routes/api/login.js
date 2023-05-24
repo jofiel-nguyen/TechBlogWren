@@ -11,7 +11,7 @@ module.exports = function(app) {
                 font-family: Arial, sans-serif;
               }
               .container {
-                max-width: 400px;
+                max-width: auto;
                 margin: 0 auto;
                 padding: 20px;
                 border: 1px solid #ccc;
