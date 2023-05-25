@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <h1>Welcome to the Dashboard, {{username}}!</h1>
+    <div class="container">
+      <div class="top-bar">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/login">Log in</a>
+      </div>
+      <button onclick="location.href='/dashboard/new'">Create New Blog Post</button>
+    </div>
+    <ul>
+      {{#each blogPosts}}
+      <li>
+        <h2>{{title}}</h2>
+        <p>{{content}}</p>
+        <p>Author: {{author}}</p>
+        <p>Date Created: {{dateCreated}}</p>
+        
+        <button onclick="location.href='/dashboard/edit/{{id}}'">Edit</button>
+        <button onclick="deleteBlogPost({{id}})">Delete</button>
+      </li>
+      {{/each}}
+    </ul>
+  </body>
+</html>

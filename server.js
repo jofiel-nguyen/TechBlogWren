@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const exphbs = require('express-handlebars');
 
 const app = express();
 
@@ -10,10 +11,15 @@ app.use(express.json());
 
 // Configure session middleware
 app.use(session({
-  secret: 'your-secret-key',
+  secret: 'super secret secret',
   resave: false,
   saveUninitialized: true
 }));
+
+// Configure the view engine
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public'), { 
