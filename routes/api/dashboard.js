@@ -26,9 +26,9 @@ module.exports = function(app) {
   app.get('/dashboard', (req, res) => {
     if (req.session.user) {
       const username = req.session.user.username;
-
+      const loggedIn = true;
       // Render the dashboard template with blogPosts data
-      res.render('dashboard', { blogPosts, username });
+      res.render('dashboard', { blogPosts, username, loggedIn });
     } else {
       // User is not logged in, redirect to the login page
       res.redirect('/login');
@@ -99,6 +99,13 @@ app.post('/dashboard/update/:id', (req, res) => {
   } else {
     res.sendStatus(404);
   }
+});
+app.get('/logout', (req, res) => {
+  // Clear the user session
+  req.session.destroy();
+
+  // Redirect to the login page
+  res.redirect('/login');
 });
 
 };

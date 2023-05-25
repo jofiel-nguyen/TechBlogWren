@@ -28,7 +28,11 @@
       <div class="top-bar">
         <a href="/">Home</a>
         <a href="/dashboard">Dashboard</a>
+       {{#if loggedIn}}
+        <a href="/logout" class="logout">Log out</a>
+      {{else}}
         <a href="/login">Log in</a>
+      {{/if}}
       </div>
       <ul>
         {{#each blogPosts}}
@@ -39,12 +43,10 @@
           <p>Date Created: {{dateCreated}}</p>
           <button onclick="location.href='/dashboard/edit/{{id}}'">Edit</button>
           <button onclick="deleteBlogPost({{id}})">Delete</button>
-          
         </li>
         {{/each}}
       </ul>
       <button onclick="location.href='/dashboard/new'">Create New Post</button>
-
     </div>
   </body>
 </html>
