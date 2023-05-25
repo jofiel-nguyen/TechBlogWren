@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Delete Blog Post</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+      function deleteBlogPost(id) {
+  // Send an AJAX request to delete the blog post
+  fetch(`/dashboard/delete/${id}`, {
+    method: 'POST'
+  })
+    .then(response => {
+      if (response.ok) {
+        // Blog post successfully deleted, you can perform any necessary actions
+        // such as updating the UI or reloading the blog post list.
+      } else {
+        // Handle error response
+      }
+    })
+    .catch(error => {
+      // Handle error
+    });
+}
+    </script>
+  </head>
+  <body>
+    <h1>Delete Blog Post</h1>
+    <p>Are you sure you want to delete the following blog post?</p>
+    <h2>{{post.title}}</h2>
+    <p>{{post.content}}</p>
+    <p>Author: {{post.author}}</p>
+    <p>Date Created: {{post.dateCreated}}</p>
+    <button onclick="deleteBlogPost({{post.id}})">Delete</button>
+  </body>
+</html>

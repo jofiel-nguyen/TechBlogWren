@@ -53,17 +53,19 @@ module.exports = function(app) {
     res.redirect('/dashboard');
   });
 
-  // Route for deleting a blog post
-  app.post('/dashboard/delete/:id', (req, res) => {
-    const postId = parseInt(req.params.id);
-    const index = blogPosts.findIndex(post => post.id === postId);
-    if (index !== -1) {
-      blogPosts.splice(index, 1);
-      res.sendStatus(200); // Send a success response
-    } else {
-      res.sendStatus(404); // Send a not found response
-    }
-  });
+// Route for deleting a blog post
+app.post('/dashboard/delete/:id', (req, res) => {
+  const postId = parseInt(req.params.id);
+  const index = blogPosts.findIndex(post => post.id === postId);
+  if (index !== -1) {
+    blogPosts.splice(index, 1);
+    res.sendStatus(200); // Send a success response
+  } else {
+    res.sendStatus(404); // Send a not found response
+  }
+});
+
+
 
   // Route for editing a blog post
   app.get('/dashboard/edit/:id', (req, res) => {

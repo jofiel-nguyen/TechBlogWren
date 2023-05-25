@@ -3,6 +3,24 @@
   <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="/style.css">
+    <script>
+      function deleteBlogPost(postId) {
+        fetch(`/dashboard/delete/${postId}`, { method: 'POST' })
+          .then(response => {
+            if (response.ok) {
+              // Successful deletion, perform necessary actions (e.g., refresh the page)
+              location.reload();
+            } else {
+              // Error occurred during deletion, handle accordingly
+              console.error('Failed to delete blog post');
+            }
+          })
+          .catch(error => {
+            // Error occurred during the fetch request, handle accordingly
+            console.error('Failed to delete blog post', error);
+          });
+      }
+    </script>
   </head>
   <body>
     <h1>Welcome to the Dashboard, {{username}}!</h1>
@@ -12,20 +30,21 @@
         <a href="/dashboard">Dashboard</a>
         <a href="/login">Log in</a>
       </div>
-      <button onclick="location.href='/dashboard/new'">Create New Blog Post</button>
+      <ul>
+        {{#each blogPosts}}
+        <li>
+          <h2>{{title}}</h2>
+          <p>{{content}}</p>
+          <p>Author: {{author}}</p>
+          <p>Date Created: {{dateCreated}}</p>
+          <button onclick="location.href='/dashboard/edit/{{id}}'">Edit</button>
+          <button onclick="deleteBlogPost({{id}})">Delete</button>
+          
+        </li>
+        {{/each}}
+      </ul>
+      <button onclick="location.href='/dashboard/new'">Create New Post</button>
+
     </div>
-    <ul>
-      {{#each blogPosts}}
-      <li>
-        <h2>{{title}}</h2>
-        <p>{{content}}</p>
-        <p>Author: {{author}}</p>
-        <p>Date Created: {{dateCreated}}</p>
-        
-        <button onclick="location.href='/dashboard/edit/{{id}}'">Edit</button>
-        <button onclick="deleteBlogPost({{id}})">Delete</button>
-      </li>
-      {{/each}}
-    </ul>
   </body>
 </html>
