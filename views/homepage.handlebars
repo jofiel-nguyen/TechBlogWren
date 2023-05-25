@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-bar">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/login">Log in</a>
+      </div>
+      <div class="container">
+        <h1>{{ title }}</h1>
+        <h2>About MVC (Model-View-Controller)</h2>
+        <p>
+          MVC is a software architectural pattern commonly used in web development. It divides an application into three interconnected components:
+        </p>
+        <table class="table-style">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each components}}
+            <tr>
+              <td>{{ this.name }}</td>
+              <td>{{ this.description }}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <p>
+          By using the MVC pattern, developers can achieve separation of concerns, allowing for easier maintenance, code reusability, and scalability of the application.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
