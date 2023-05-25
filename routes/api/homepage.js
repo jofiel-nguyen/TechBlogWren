@@ -8,8 +8,6 @@ module.exports = function(app) {
     res.setHeader('Content-Type', 'text/css');
     next();
   });
-
-  // Set the view engine to use Handlebars
   // Set the view engine to use Handlebars
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
