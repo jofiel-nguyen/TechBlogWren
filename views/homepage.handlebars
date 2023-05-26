@@ -38,22 +38,15 @@
           </tbody>
         </table>
         {{#if loggedIn}}
-          <p>Welcome, {{ username }}!</p>
-        {{else}}
-          <p>Please log in to access the full content.</p>
-        {{/if}}
-        
-        <form action="/add-comment" method="POST">
-          {{#if loggedIn}}
-            <p>Logged in as: {{username}}</p>
-          {{else}}
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-          {{/if}}
-          <label for="comment">Comment:</label>
-          <textarea id="comment" name="comment" required></textarea>
-          <button type="submit">Add Comment</button>
-        </form>
+  <form action="/add-comment" method="POST">
+    <p>Logged in as: {{username}}</p>
+    <label for="comment">Comment:</label>
+    <textarea id="comment" name="comment" required></textarea>
+    <button type="submit">Add Comment</button>
+  </form>
+{{else}}
+  <p>Please log in to add comments.</p>
+{{/if}}
       </div>
     </div>
   </body>
