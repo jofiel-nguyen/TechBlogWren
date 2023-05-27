@@ -6,6 +6,15 @@ const fs = require('fs');
 const commentsFile = path.join(__dirname, '..', '..', 'data', 'comments.json');
 
 module.exports = function (app) {
+  // Create an instance of exphbs
+  const handlebars = exphbs.create();
+
+  // Register the formatDate helper
+  handlebars.handlebars.registerHelper('formatDate', (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+  });
+
   // Serve static files from the "public" directory
   app.use(express.static(path.join(__dirname, 'public')));
   app.use('/style.css', (req, res, next) => {
@@ -23,7 +32,7 @@ module.exports = function (app) {
   );
 
   // Set the view engine to use Handlebars
-  app.engine('handlebars', exphbs());
+  app.engine('handlebars', handlebars.engine);
   app.set('view engine', 'handlebars');
   app.set('views', path.join(__dirname, '..', '..', 'views'));
 
@@ -71,7 +80,7 @@ module.exports = function (app) {
     const newComment = {
       username: username,
       content: comment,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString().split('T')[0], 
     };
 
     // Save the comment to the file
@@ -84,7 +93,61 @@ module.exports = function (app) {
   // Render the login page
   app.get('/login', (req, res) => {
     res.render('login', {
-      title: 'Login',
+      
+    });
+  });
+  
+  // Handle the logout action
+  app.get('/logout', (req, res) => {
+    // Clear the user session
+    req.session.destroy();
+
+    // Redirect to the login page
+    res.redirect('/login');
+  });
+
+  app.post('/delete-comment/:id', (req, res) => {
+    if (!req.session.user) {
+      // User is not logged in, redirect to the login page
+      return res.redirect('/login');
+    }
+
+    const commentId = req.params.id;
+
+    // Read the comments from the file
+    fs.readFile(commentsFile, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      let comments = [];
+
+      if (data) {
+        comments = JSON.parse(data);
+      }
+
+      // Find the comment index by ID
+      const commentIndex = comments.findIndex((comment) => comment._id === commentId);
+
+      if (commentIndex !== -1) {
+        // Delete the comment
+        comments.splice(commentIndex, 1);
+
+        // Save the updated comments to the file
+        fs.writeFile(commentsFile, JSON.stringify(comments), 'utf8', (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          console.log('Comment deleted successfully!');
+          res.redirect('/');
+        });
+      } else {
+        console.log('Comment not found!');
+        res.redirect('/');
+      }
     });
   });
 

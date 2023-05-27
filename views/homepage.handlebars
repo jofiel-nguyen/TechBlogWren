@@ -45,13 +45,18 @@
             <div class="comment">
               <p>Username: {{username}}</p>
               <p>Content: {{content}}</p>
-              <p>Created At: {{createdAt}}</p>
+              <p>Created At: {{formatDate createdAt}}</p>
+              {{#if loggedIn}}
+                <form action="/delete-comment" method="POST">
+                  <input type="hidden" name="commentId" value="{{@index}}">
+                  <button type="submit">Delete</button>
+                </form>
+              {{/if}}
             </div>
           {{/each}}
         {{else}}
           <p>No comments yet.</p>
         {{/if}}
-        
         {{#if loggedIn}}
           <form action="/add-comment" method="POST">
             <p>Logged in as: {{username}}</p>
