@@ -1,17 +1,36 @@
-const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
-// Define the comment schema
-const commentSchema = new mongoose.Schema({
-  username: String,
-  content: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+const commentsFile = path.join(__dirname, '..', 'data', 'comments.json');
 
-// Create the Comment model using the comment schema
-const Comment = mongoose.model('Comment', commentSchema);
+// Save comment to the file
+const saveComment = (comment) => {
+  fs.readFile(commentsFile, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
 
-// Export the Comment model
-module.exports = Comment;
+    let comments = [];
+
+    if (data) {
+      comments = JSON.parse(data);
+    }
+
+    comments.push(comment);
+
+    fs.writeFile(commentsFile, JSON.stringify(comments), 'utf8', (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      console.log('Comment saved successfully!');
+    });
+  });
+};
+
+// Export the function for saving comments
+module.exports = {
+  saveComment
+};

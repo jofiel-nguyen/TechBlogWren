@@ -2,8 +2,8 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const mongoose = require('mongoose');
-const Comment = require('../../models/comment');
+const fs = require('fs');
+const commentsFile = path.join(__dirname, '..', '..', 'data', 'comments.json');
 
 module.exports = function (app) {
   // Serve static files from the "public" directory
@@ -27,35 +27,33 @@ module.exports = function (app) {
   app.set('view engine', 'handlebars');
   app.set('views', path.join(__dirname, '..', '..', 'views'));
 
-  // Connect to the database
-  mongoose
-    .connect('mongodb://localhost:27017/your-database-name', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => {
-      console.log('Connected to the database');
-    })
-    .catch((error) => {
-      console.error('Error connecting to the database:', error);
-    });
-
   // Homepage route
   app.get('/', (req, res) => {
     const username = req.session.user ? req.session.user.username : null;
 
-    res.render('homepage', {
-      title: 'The Tech Blog',
-      components: [
-        { name: 'Model', description: 'Represents the data and business logic of the application.' },
-        { name: 'View', description: 'Handles the presentation and user interface.' },
-        {
-          name: 'Controller',
-          description: 'Acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.',
-        },
-      ],
-      loggedIn: req.session.user ? true : false,
-      username: username,
+    // Read the comments from the file
+    fs.readFile(commentsFile, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const comments = data ? JSON.parse(data) : [];
+
+      res.render('homepage', {
+        title: 'The Tech Blog',
+        components: [
+          { name: 'Model', description: 'Represents the data and business logic of the application.' },
+          { name: 'View', description: 'Handles the presentation and user interface.' },
+          {
+            name: 'Controller',
+            description: 'Acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.',
+          },
+        ],
+        loggedIn: req.session.user ? true : false,
+        username: username,
+        comments: comments,
+      });
     });
   });
 
@@ -69,24 +67,18 @@ module.exports = function (app) {
     const { comment } = req.body;
     const username = req.session.user.username;
 
-    // Store the comment in the database
+    // Store the comment
     const newComment = {
       username: username,
       content: comment,
       createdAt: new Date(),
     };
 
-    // Save the comment to the database
-    Comment.create(newComment)
-      .then(() => {
-        // Comment saved successfully
-        res.redirect('/');
-      })
-      .catch((error) => {
-        // Error occurred while saving the comment
-        console.error('Failed to save comment:', error);
-        res.redirect('/');
-      });
+    // Save the comment to the file
+    saveComment(newComment);
+
+    // Redirect back to the homepage
+    res.redirect('/');
   });
 
   // Render the login page
@@ -95,4 +87,31 @@ module.exports = function (app) {
       title: 'Login',
     });
   });
+
+  // Save comment to the file
+  const saveComment = (comment) => {
+    fs.readFile(commentsFile, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      let comments = [];
+
+      if (data) {
+        comments = JSON.parse(data);
+      }
+
+      comments.push(comment);
+
+      fs.writeFile(commentsFile, JSON.stringify(comments), 'utf8', (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log('Comment saved successfully!');
+      });
+    });
+  };
 };

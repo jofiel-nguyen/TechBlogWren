@@ -37,16 +37,31 @@
             {{/each}}
           </tbody>
         </table>
+        
+        <!-- Display comments section -->
+        <h2>Comments</h2>
+        {{#if comments.length}}
+          {{#each comments}}
+            <div class="comment">
+              <p>Username: {{username}}</p>
+              <p>Content: {{content}}</p>
+              <p>Created At: {{createdAt}}</p>
+            </div>
+          {{/each}}
+        {{else}}
+          <p>No comments yet.</p>
+        {{/if}}
+        
         {{#if loggedIn}}
-  <form action="/add-comment" method="POST">
-    <p>Logged in as: {{username}}</p>
-    <label for="comment">Comment:</label>
-    <textarea id="comment" name="comment" required></textarea>
-    <button type="submit">Add Comment</button>
-  </form>
-{{else}}
-  <p>Please log in to add comments.</p>
-{{/if}}
+          <form action="/add-comment" method="POST">
+            <p>Logged in as: {{username}}</p>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            <button type="submit">Add Comment</button>
+          </form>
+        {{else}}
+          <p>Please log in to add comments.</p>
+        {{/if}}
       </div>
     </div>
   </body>
