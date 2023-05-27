@@ -4,8 +4,6 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 const fs = require('fs');
 const commentsFile = path.join(__dirname, '..', '..', 'data', 'comments.json');
-
-// Import the deleteComment function from comment.js
 const { deleteComment } = require('../api/comment');
 
 module.exports = function (app) {
@@ -57,10 +55,7 @@ module.exports = function (app) {
         components: [
           { name: 'Model', description: 'Represents the data and business logic of the application.' },
           { name: 'View', description: 'Handles the presentation and user interface.' },
-          {
-            name: 'Controller',
-            description: 'Acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.',
-          },
+          { name: 'Controller', description: 'Acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.' },
         ],
         loggedIn: req.session.user ? true : false,
         username: username,
@@ -112,54 +107,23 @@ module.exports = function (app) {
     res.redirect('/login');
   });
 
-  // Delete comment route
-  app.delete('/delete-comment/:id', (req, res) => {
-    if (!req.session.user) {
-      // User is not logged in, redirect to the login page
-      return res.redirect('/login');
-    }
+// Delete comment route
+app.delete('/delete-comment/:id', (req, res) => {
+  console.log('Delete comment route called'); // Add this line for debugging
+  if (!req.session.user) {
+    // User is not logged in, redirect to the login page
+    return res.redirect('/login');
+  }
 
-    const commentId = req.params.id;
+  const commentId = req.params.id;
+  console.log('Comment ID:', commentId); // Add this line for debugging
 
-    // Call the deleteComment function passing the comment ID
-    deleteComment(commentId);
+  // Call the deleteComment function passing the comment ID
+  deleteComment(commentId);
 
-    // Read the comments from the file
-    fs.readFile(commentsFile, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      let comments = [];
-
-      if (data) {
-        comments = JSON.parse(data);
-      }
-
-      // Find the comment index by ID
-      const commentIndex = comments.findIndex((comment) => comment._id === commentId);
-
-      if (commentIndex !== -1) {
-        // Delete the comment
-        comments.splice(commentIndex, 1);
-
-        // Save the updated comments to the file
-        fs.writeFile(commentsFile, JSON.stringify(comments), 'utf8', (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-
-          console.log('Comment deleted successfully!');
-          res.sendStatus(200);
-        });
-      } else {
-        console.log('Comment not found!');
-        res.sendStatus(404);
-      }
-    });
-  });
+  // Redirect back to the homepage
+  res.redirect('/');
+});
 
   // Save comment to the file
   const saveComment = (comment) => {
