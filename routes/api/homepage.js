@@ -5,6 +5,9 @@ const session = require('express-session');
 const fs = require('fs');
 const commentsFile = path.join(__dirname, '..', '..', 'data', 'comments.json');
 
+// Import the deleteComment function from comment.js
+const { deleteComment } = require('../api/comment');
+
 module.exports = function (app) {
   // Create an instance of exphbs
   const handlebars = exphbs.create();
@@ -80,7 +83,7 @@ module.exports = function (app) {
     const newComment = {
       username: username,
       content: comment,
-      createdAt: new Date().toISOString().split('T')[0], 
+      createdAt: new Date().toISOString().split('T')[0],
     };
 
     // Save the comment to the file
@@ -92,11 +95,14 @@ module.exports = function (app) {
 
   // Render the login page
   app.get('/login', (req, res) => {
-    res.render('login', {
-      
-    });
+    if (req.session.user) {
+      // User is already logged in, redirect to the homepage
+      return res.redirect('/');
+    }
+
+    res.render('login');
   });
-  
+
   // Handle the logout action
   app.get('/logout', (req, res) => {
     // Clear the user session
@@ -106,13 +112,17 @@ module.exports = function (app) {
     res.redirect('/login');
   });
 
-  app.post('/delete-comment/:id', (req, res) => {
+  // Delete comment route
+  app.delete('/delete-comment/:id', (req, res) => {
     if (!req.session.user) {
       // User is not logged in, redirect to the login page
       return res.redirect('/login');
     }
 
     const commentId = req.params.id;
+
+    // Call the deleteComment function passing the comment ID
+    deleteComment(commentId);
 
     // Read the comments from the file
     fs.readFile(commentsFile, 'utf8', (err, data) => {
@@ -142,11 +152,11 @@ module.exports = function (app) {
           }
 
           console.log('Comment deleted successfully!');
-          res.redirect('/');
+          res.sendStatus(200);
         });
       } else {
         console.log('Comment not found!');
-        res.redirect('/');
+        res.sendStatus(404);
       }
     });
   });

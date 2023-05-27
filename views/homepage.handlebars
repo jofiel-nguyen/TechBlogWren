@@ -37,26 +37,7 @@
             {{/each}}
           </tbody>
         </table>
-        
-        <!-- Display comments section -->
-        <h2>Comments</h2>
-        {{#if comments.length}}
-          {{#each comments}}
-            <div class="comment">
-              <p>Username: {{username}}</p>
-              <p>Content: {{content}}</p>
-              <p>Created At: {{formatDate createdAt}}</p>
-              {{#if loggedIn}}
-                <form action="/delete-comment" method="POST">
-                  <input type="hidden" name="commentId" value="{{@index}}">
-                  <button type="submit">Delete</button>
-                </form>
-              {{/if}}
-            </div>
-          {{/each}}
-        {{else}}
-          <p>No comments yet.</p>
-        {{/if}}
+
         {{#if loggedIn}}
           <form action="/add-comment" method="POST">
             <p>Logged in as: {{username}}</p>
@@ -66,6 +47,26 @@
           </form>
         {{else}}
           <p>Please log in to add comments.</p>
+        {{/if}}
+
+        <!-- Display comments section -->
+        <h2>Comments</h2>
+        {{#if comments.length}}
+          {{#each comments}}
+            <div class="comment">
+              <p>Username: {{username}}</p>
+              <p>Content: {{content}}</p>
+              <p>Created At: {{formatDate createdAt}}</p>
+              {{#if loggedIn}}
+                <form action="/delete-comment/{{this._id}}" method="POST">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit">Delete</button>
+                </form>
+              {{/if}}
+            </div>
+          {{/each}}
+        {{else}}
+          <p>No comments yet.</p>
         {{/if}}
       </div>
     </div>
