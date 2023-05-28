@@ -29,11 +29,56 @@ fs.readFile('./data/posts.json', 'utf8', (err, data) => {
 
 module.exports = function(app) {
   const currentDate = new Date().toISOString().split('T')[0];
-
-  // Homepage route
-  app.get('/', (req, res) => {
-    // Render the homepage
+ // Function to save comments array to comments.json
+ function saveCommentsToJSON(comments) {
+  const jsonContent = JSON.stringify(comments, null, 2);
+  fs.writeFile('./data/comments.json', jsonContent, 'utf8', (err) => {
+    if (err) {
+      console.error('Error writing to comments.json:', err);
+    } else {
+      console.log('Comments saved to comments.json');
+    }
   });
+}
+
+// Load comments from comments.json
+function loadCommentsFromJSON(callback) {
+  fs.readFile('./data/comments.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading comments.json:', err);
+      callback([]);
+    } else {
+      try {
+        const comments = JSON.parse(data);
+        callback(comments);
+      } catch (error) {
+        console.error('Error parsing comments.json:', error);
+        callback([]);
+      }
+    }
+  });
+}
+
+// Homepage route
+app.get('/', (req, res) => {
+  const loggedIn = req.session.user ? true : false;
+  const username = loggedIn ? req.session.user.username : null;
+
+  // Load comments from JSON file
+  loadCommentsFromJSON((comments) => {
+    res.render('homepage', {
+      title: 'The Tech Blog',
+      components: [
+        { name: 'Model', description: 'Represents the data and business logic of the application.' },
+        { name: 'View', description: 'Handles the presentation and user interface.' },
+        { name: 'Controller', description: 'Acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.' },
+      ],
+      loggedIn: loggedIn,
+      username: username,
+      comments: comments,
+    });
+  });
+});
 
   // Dashboard route
   app.get('/dashboard', (req, res) => {
