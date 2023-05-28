@@ -5,7 +5,7 @@ let blogPosts = [];
 // Function to save blogPosts array to posts.json
 function savePostsToJSON(posts) {
   const jsonContent = JSON.stringify(posts, null, 2);
-  fs.writeFile('posts.json', jsonContent, 'utf8', err => {
+  fs.writeFile('./data/posts.json', jsonContent, 'utf8', err => {
     if (err) {
       console.error('Error writing to posts.json:', err);
     } else {
@@ -15,7 +15,7 @@ function savePostsToJSON(posts) {
 }
 
 // Load blog posts from posts.json
-fs.readFile('posts.json', 'utf8', (err, data) => {
+fs.readFile('./data/posts.json', 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading posts.json:', err);
   } else {
