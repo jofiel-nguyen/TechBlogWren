@@ -1,10 +1,10 @@
 [
   {
     "id": 1,
-    "title": "Understanding MVC (Model-View-Controller)",
+    "title": "Understanding MVC (Model -View Controller)",
     "content": "MVC is a software architectural pattern commonly used in web development. It divides an application into three interconnected components: the Model, the View, and the Controller. The Model represents the data and business logic, the View handles the presentation and user interface, and the Controller acts as an intermediary between the Model and View, handling user input and updating the Model or View as necessary.",
     "dateCreated": "2023-05-20",
-    "author": "Lisa Smith"
+    "author": "Lily"
   },
   {
     "id": 2,

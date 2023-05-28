@@ -55,7 +55,7 @@
           {{#each comments}}
             <div class="comment">
               <p>Username: {{username}}</p>
-              <p>Content: {{content}}</p>
+              <p>Comment: {{content}}</p>
               <p>Created At: {{formatDate createdAt}}</p>
               {{#if loggedIn}}
                 <form action="/delete-comment/{{this._id}}" method="POST">

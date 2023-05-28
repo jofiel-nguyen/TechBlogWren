@@ -1,15 +1,1 @@
-[
-    {
-      "username": "Lily",
-      "password": "1a@tc"
-    },
-    {
-      "username": "wren",
-      "password": "b@tt23"
-    },
-    {
-      "username": "Henry",
-      "password": "1#ew"
-    }
-  ]
-  
+[{"username":"Lily","password":"1a@tc"},{"username":"wren","password":"b@tt23"},{"username":"Henry","password":"1#ew"},{"username":"Hana","password":"abc"},{"username":"Loli","password":"def"}]
