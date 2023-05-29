@@ -57,8 +57,8 @@
               <p>Username: {{username}}</p>
               <p>Comment: {{content}}</p>
               <p>Created At: {{formatDate createdAt}}</p>
-              {{#if loggedIn}}
-                <form action="/delete-comment/{{this._id}}" method="POST">
+              {{#if ../loggedIn}}
+                <form action="/delete-comment/{{id}}" method="POST">
                  <input type="hidden" name="_method" value="DELETE">
                 <button type="submit">Delete</button>
               </form>

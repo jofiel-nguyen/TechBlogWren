@@ -47,10 +47,11 @@ module.exports = function (app) {
         console.error(err);
         return;
       }
-
+      console.log(req.session);
       const comments = data ? JSON.parse(data) : [];
 
       res.render('homepage', {
+        loggedIn: req.session.loggedIn,
         title: 'The Tech Blog',
         components: [
           { name: 'Model', description: 'Represents the data and business logic of the application.' },
@@ -108,7 +109,8 @@ module.exports = function (app) {
   });
 
 // Delete comment route
-app.delete('/delete-comment/:id', (req, res) => {
+app.post('/delete-comment/:id', (req, res) => {
+  console.log(req.params.id);
   console.log('Delete comment route called'); // Add this line for debugging
   if (!req.session.user) {
     // User is not logged in, redirect to the login page
@@ -151,4 +153,5 @@ app.delete('/delete-comment/:id', (req, res) => {
       });
     });
   };
+  
 };

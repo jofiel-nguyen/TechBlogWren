@@ -16,7 +16,7 @@ module.exports = function(app) {
     if (user) {
       // Authentication success
       req.session.user = { username };
-
+      req.session.loggedIn = true;
       // Redirect to the dashboard or send a success response
       res.redirect('/dashboard');
     } else {

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const commentsFile = path.join(__dirname, '..', 'data', 'comments.json');
+const commentsFile = path.join(__dirname,'../../data/comments.json');
 
 // Save comment to the file
 const saveComment = (comment) => {
@@ -42,17 +42,15 @@ const deleteComment = (commentId) => {
 
     if (data) {
       comments = JSON.parse(data);
+      console.log(comments);
     }
 
     // Find the comment index by ID
-    const commentIndex = comments.findIndex((comment) => comment._id === commentId);
+    const newComment = comments.filter((comment) => comment.id === commentId);
 
-    if (commentIndex !== -1) {
-      // Delete the comment
-      comments.splice(commentIndex, 1);
-
+    
       // Save the updated comments to the file
-      fs.writeFile(commentsFile, JSON.stringify(comments), 'utf8', (err) => {
+      fs.writeFile(commentsFile, JSON.stringify(newComment), 'utf8', (err) => {
         if (err) {
           console.error(err);
           return;
@@ -60,9 +58,6 @@ const deleteComment = (commentId) => {
 
         console.log('Comment deleted successfully!');
       });
-    } else {
-      console.log('Comment not found!');
-    }
   });
 };
 
