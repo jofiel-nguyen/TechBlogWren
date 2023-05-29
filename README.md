@@ -7,6 +7,6 @@ My task this week is to build a CMS-style blog site similar to a Wordpress site,
 ### Mock up
 The following animation demonstrates the application functionality:
 
-![Animation cycles through signing into the app, clicking on buttons, and updating blog posts.](./Assets/14-mvc-homework-demo-01.gif) 
+![Animation cycles through signing into the app, clicking on buttons, and updating blog posts.](./02-Challenge/Assets/Screenshot%202023-05-29%20at%2011.08.41%20AM.png) 
 <br>
 This is my github link: https://github.com/nhunguyen-debug/MVC-From-Rice-Wren.git
