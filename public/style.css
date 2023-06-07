@@ -92,3 +92,26 @@ li {
 li button {
   margin-left: 10px;
 }
+
+.nav-list li:hover {
+  cursor: pointer;
+}
+.nav-list li:hover {
+  transform: scale(1.1);
+}
+.nav-list li:active {
+  cursor: grabbing;
+}
+
+
+/* Media queries for responsive web design */
+@media screen and (min-width: 576px ){
+  section h2 {
+    text-align: start;
+  }
+  
+  footer {
+      background-color: pink;
+      text-align: center;
+  }
+}
